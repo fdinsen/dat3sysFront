@@ -26,10 +26,7 @@ function App() {
       <Header loggedIn={loggedIn} />
       <Switch>
         <Route exact path="/">
-          <Home loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
-        </Route>
-        <Route path="/dashboard">
-          <DashBoard loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+          <Home />
         </Route>
         <Route path="/404">
           <NoMatch />

@@ -1,24 +1,17 @@
 import { NavLink } from 'react-router-dom';
-import { Container, Nav } from 'react-bootstrap';
+import { Container, Nav, Navbar } from 'react-bootstrap';
 
 function Header(props) {
   return (
-    <Container>
+    <Navbar className="navbar-expand-lg navbar-light bg-light">
       <Nav>
         <Nav.Item>
           <NavLink to="/" className="nav-link">
             Home
           </NavLink>
         </Nav.Item>
-        {props.loggedIn && (
-          <Nav.Item>
-            <NavLink to="/dashboard" className="nav-link">
-              Dashboard
-            </NavLink>
-          </Nav.Item>
-        )}
       </Nav>
-    </Container>
+    </Navbar>
   );
 }
 export default Header;
