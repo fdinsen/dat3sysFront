@@ -26,13 +26,14 @@ function Search(props) {
         //Currently the backend doesn't respond to queries with spaces, 
         // so this replace function is a temporary workaround
         const endpoint = `/${service}/search/${searchQuery.replace(/ /g,'')}`;
+        setSearchQuery(searchQuery.replace(/ /g,''));
         search(endpoint);
     }
 
     function search(endpoint) {
         setHideSpinner(false);
         facade.fetchData(endpoint, "GET").then(data => {
-            props.update(data.all);
+            props.update(data.all, service);
             setHideSpinner(true);
         })
     }

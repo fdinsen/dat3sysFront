@@ -11,12 +11,16 @@ function SearchList(props) {
         }
     })
 
+    function handleClick(event) {
+        event.target.id ? props.updateId(event.target.id) : console.log("dunt klik de img");
+    }
+
     return (
         <>
             <Container className="mt-4">
                 <Col>
                     <Card>
-                        <ListGroup>
+                        <ListGroup onClick={handleClick}>
                             <BuildList list={list}/>
                         </ListGroup>
                     </Card>
@@ -29,7 +33,7 @@ function SearchList(props) {
 function BuildList(props) {
     return props.list.map(elem => {
         return (
-        <ListGroup.Item action key={elem.id} >
+        <ListGroup.Item action key={elem.id} id={elem.id} >
             <img src={elem.profilePicUrl} width="40pt" className="mr-4"/>
             {elem.name}
         </ListGroup.Item>);
