@@ -43,6 +43,8 @@ function ChannelInfo(props) {
 }
 
 function YouTubeInfo(props) {
+    getFaviconEl().href = props.data.profilePicURL;
+    getTitleEl().innerHTML = props.data.title + " | Googol Search";
     return (
         <Card style={{ width: '40rem' }}>
             <Card.Header>
@@ -51,7 +53,9 @@ function YouTubeInfo(props) {
                     <img src={yt} width="60pt" style={{ 'float': 'right' }}></img>
                 </a>
             </Card.Header>
-            <Card.Img variant="top" src={props.data.profilePicURL} />
+            <a href={`https://www.youtube.com/channel/${props.channelId}`} target="_blank">
+                <Card.Img variant="top" src={props.data.profilePicURL} />
+            </a>
             <Card.Body>
                 <ListGroup variant="flush">
                     <ListGroup.Item>
@@ -72,6 +76,8 @@ function YouTubeInfo(props) {
 }
 
 function Twitchinfo(props) {
+    getFaviconEl().href = props.data.profilePicUrl;
+    getTitleEl().innerHTML = props.data.title + " | Googol Search";
     let isPartner = "";
     if (props.data.partner) {
         isPartner = "Yes";
@@ -86,7 +92,7 @@ function Twitchinfo(props) {
                     <img src={twitch} width="35pt" style={{ 'float': 'right' }}></img>
                 </a>
             </Card.Header>
-            <Card.Img variant="top" src={props.data.profilePicUrl} />
+            <a href={`https://www.twitch.tv/${props.data.title}`} target="_blank"><Card.Img variant="top" src={props.data.profilePicUrl} /></a>
             <Card.Body>
                 <Card.Text>{props.data.desc}</Card.Text>
                 <Card.Text>Is partner?: {isPartner}</Card.Text>
@@ -96,4 +102,12 @@ function Twitchinfo(props) {
                 <Card.Text>Followers: {props.data.followers}</Card.Text>
             </Card.Body>
         </Card>);
+}
+
+function getFaviconEl() {
+    return document.getElementById("favicon");
+}
+
+function getTitleEl() {
+    return document.getElementById("title");
 }
