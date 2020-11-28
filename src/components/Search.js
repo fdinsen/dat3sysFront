@@ -61,7 +61,7 @@ function Search(props) {
                             </form>
                             <form className="form-actions" style={{'text-align': 'center'}} onSubmit={handleSubmit}>
                                 <input className="form-control mt-2" placeholder="Enter the name of a channel" value={searchQuery} onChange={handleQueryChange}/>
-                                <Button type="submit" className="mt-2">
+                                <Button type="submit" className="mt-4">
                                 <span id="spinner" class="spinner-border spinner-border-sm mr-1" role="status" hidden={hideSpinner}></span>
                                     Googol Search
                                 </Button>
