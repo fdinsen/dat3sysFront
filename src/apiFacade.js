@@ -50,7 +50,11 @@ function apiFacade() {
         throw err;
       });
   };
-
+  const putData = (endpoint, htttpMethod, body) => {
+    const options = makeOptions(htttpMethod,false,body);
+    return fetch(URL + endpoint, options).then(handleHttpErrors);
+  }
+  
   const fetchData = (endpoint, httpMethod) => {
     const options = makeOptions(httpMethod, true); //True add's the token
     return fetch(URL + endpoint, options).then(handleHttpErrors);
@@ -80,6 +84,7 @@ function apiFacade() {
     logout,
     fetchData,
     getUser,
+    putData,
   };
 }
 const facade = apiFacade();
