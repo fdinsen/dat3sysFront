@@ -2,17 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Col, Container, Row, ListGroup, Card, Button, Alert, ButtonGroup, Accordion } from 'react-bootstrap';
 import facade from "../apiFacade";
 import SingleHistory from './SingleHistory';
+import SingleTimelineHistory from './SingleTimelineHistory';
 
 function History(props) {
 
     const [arrays, setArrays] = useState(null);
     const [errorMes, setErrorMes] = useState("");
     const [views, setViews] = useState([])
-    const [twitchFollowers, setFollowers] = useState([])
+    const [followers, setFollowers] = useState([])
+    const [games, setGames] = useState([]);
     const [hasData, setHasData] = useState(false);
 
     useEffect(() => {
-        console.log("her er "+twitchFollowers)
+        console.log("her er "+followers)
         const endpoint = `/${props.channel.service}/get-analytics/${props.channel.id}`
         
         if (arrays === null) {
@@ -23,7 +25,7 @@ function History(props) {
                 setErrorMes("something went wrong")
             })
         }else{
-            handleData(arrays, setViews, setFollowers,setHasData);
+            handleData(arrays, setViews, setFollowers, setGames, setHasData);
             
         }
 
@@ -64,7 +66,7 @@ function History(props) {
                             </Accordion.Toggle>
                         </Card.Header>
                         <Accordion.Collapse eventKey="1">
-                            <Card.Body><SingleHistory ar={twitchFollowers} /></Card.Body>
+                            <Card.Body><SingleHistory ar={followers} /></Card.Body>
                         </Accordion.Collapse>
                     </Card>
                     <Card>
@@ -74,7 +76,7 @@ function History(props) {
                             </Accordion.Toggle>
                         </Card.Header>
                         <Accordion.Collapse eventKey="2">
-                            <Card.Body><SingleHistory ar={array} /></Card.Body>
+                            <Card.Body><SingleTimelineHistory ar={games} /></Card.Body>
                         </Accordion.Collapse>
                     </Card>
 
@@ -89,20 +91,23 @@ function History(props) {
     )
 }
 
-function handleData(data, setViews, setFollowers, setHasData) {
+function handleData(data, setViews, setFollowers, setGames, setHasData) {
 
     let views = [];
-    let temp = [];
-
-    data.forEach(element => {
-        console.log(element)
-        views.push([element.savedOnDate, element.views])
-        temp.push([element.savedOnDate, element.followers])
+    let followers = [];
+    let games = [];
+    data.forEach((element, index, data) => {
+        console.log(element);
+        views.push([element.savedOnDate, element.views]);
+        followers.push([element.savedOnDate, element.followers]);
+        games.push([element.game, element.savedOnDate, data[index++].savedOnDate]);
     });
-    setViews(views)
-    setFollowers(temp)
+    setViews(views);
+    setFollowers(followers);
+    setGames(games);
     
 
     setHasData(true);
 }
+
 export default History;
