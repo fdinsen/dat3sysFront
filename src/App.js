@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DashBoard from './components/DashBoard';
 import Home from './components/Home';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -23,6 +27,18 @@ function App() {
 
   return (
     <>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      
       <Header loggedIn={loggedIn} />
       <Switch>
         <Route exact path="/">

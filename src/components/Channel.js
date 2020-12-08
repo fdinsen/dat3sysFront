@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Col, Container, Row, ListGroup, Card } from 'react-bootstrap';
+import { Col, Container, Row, ListGroup, Card, Button, Alert } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import facade from "../apiFacade";
 import yt from "../img/yt.png"
 import twitch from "../img/twitch.png"
+import Hisotry from "./History"
 
 function Channel(props) {
     const [data, setData] = useState(null);
     const [hasData, setHasData] = useState(false);
+    const [errorMes, setErrorMes] = useState("");
+    const [analytics, showAnalytics] = useState(false);
 
     useEffect(() => {
         const endpoint = `/${props.channel.service}/channel/${props.channel.id}`
@@ -18,15 +21,16 @@ function Channel(props) {
     }, [])
 
     return (
-        <>
+        <>{analytics ? <Hisotry channel={props.channel} data={data} analytics={analytics} showAnalytics={showAnalytics} /> :
             <Container className="mt-4 mb-4">
                 <Col className="d-flex justify-content-center">
                     {hasData ?
-                        (<ChannelInfo channel={props.channel} data={data} />) :
+                        (<ChannelInfo channel={props.channel} data={data} errorMes={errorMes} setErrorMes={setErrorMes} analytics={analytics} showAnalytics={showAnalytics} />) :
                         (<span id="spinner" class="spinner-border spinner-border-sm mr-1" role="status"></span>)
                     }
                 </Col>
             </Container>
+        }
         </>
     );
 }
@@ -34,12 +38,14 @@ export default Channel;
 
 function ChannelInfo(props) {
     if (props.channel.service == "youtube") {
-        return <YouTubeInfo data={props.data} channelId={props.channel.id} />
+        return <YouTubeInfo data={props.data} channelId={props.channel.id} errorMes={props.errorMes} setErrorMes={props.setErrorMes} analytics={props.analytics} showAnalytics={props.showAnalytics} />
     } else if (props.channel.service == "twitch") {
-        return <Twitchinfo data={props.data} />
+        return <Twitchinfo channelId={props.channel.id} data={props.data} errorMes={props.errorMes} setErrorMes={props.setErrorMes} analytics={props.analytics} showAnalytics={props.showAnalytics} />
     } else {
-        return <p>Error, no service by name {props.channel.service}</p>
+        return <p>Error, no service by name
+             {props.channel.service}</p>
     }
+
 }
 
 function YouTubeInfo(props) {
@@ -69,6 +75,16 @@ function YouTubeInfo(props) {
                         <Card.Text>Topics: <ul>{props.data.topicCategories.map(elem => {
                             return (<li>{elem}</li>)
                         })}</ul></Card.Text>
+                        <Row>
+                            <Col>
+                                <Button onClick={(e) => saveYoutube(props.data, e, props.setErrorMes, props.channelId)}>Capture analytics</Button>
+                            </Col>
+                            <Col>
+                                <Button onClick={(e) => props.showAnalytics(true)}>Show History</Button>
+                            </Col>
+
+                        </Row>
+                        <p>{props.errorMes}</p>
                     </ListGroup.Item>
                 </ListGroup>
             </Card.Body>
@@ -100,8 +116,50 @@ function Twitchinfo(props) {
                 <Card.Text>Game: {props.data.game}</Card.Text>
                 <Card.Text>Views: {props.data.views}</Card.Text>
                 <Card.Text>Followers: {props.data.followers}</Card.Text>
+                <Row>
+                    <Col>
+                        <Button onClick={(e) => saveTwitch(props.data, e, props.setErrorMes, props.channelId)}>Capture analytics</Button>
+                    </Col>
+                    <Col>
+                        <Button onClick={(e) => props.showAnalytics(true)}>Show History</Button>
+                    </Col>
+                </Row>
+                <p>{props.errorMes}</p>
+
             </Card.Body>
         </Card>);
+}
+
+function saveTwitch(data, e, setErrorMes, channelId) {
+
+    const endpoint = "/twitch/save/" + channelId;
+
+    facade.putData(endpoint, "GET").then(dat => {
+        setErrorMes("Data point succesfully saved")
+    }).catch((err) => {
+        if (err.status == 409) {
+            setErrorMes("Analytics was allready saved for this channel within the last minuite")
+        } else {
+            setErrorMes("Something else went wrong")
+        }
+
+    });
+
+}
+
+function saveYoutube(data, e, setErrorMes, channelId) {
+
+    const endpoint = "/youtube/save/" + channelId;
+
+    facade.putData(endpoint, "GET").then(dat => {
+        setErrorMes("Data point succesfully saved")
+    }).catch((err) => {
+        if (err.status == 409) {
+            setErrorMes("Analytics was allready saved for this channel within the last minuite")
+        } else {
+            setErrorMes("Something else went wrong")
+        }
+    });
 }
 
 function getFaviconEl() {
