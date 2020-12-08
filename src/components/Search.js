@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Col, Container, FormControl, Row, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
-import googol from "../img/googol.png"
+import googol from "../img/googol.png";
 import facade from "../apiFacade";
 
 function Search(props) {

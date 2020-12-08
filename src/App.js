@@ -14,6 +14,7 @@ import {
 } from 'react-router-dom';
 import Header from './components/Header';
 import facade from './apiFacade';
+import Register from './components/Register';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -39,10 +40,13 @@ function App() {
         pauseOnHover
       />
       
-      <Header loggedIn={loggedIn} />
+      <Header loggedIn={loggedIn}/>
       <Switch>
         <Route exact path="/">
           <Home />
+        </Route>
+        <Route path="/register">
+          <Register setLoggedIn={setLoggedIn}/>
         </Route>
         <Route path="/404">
           <NoMatch />
