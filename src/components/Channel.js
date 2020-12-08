@@ -42,7 +42,8 @@ function ChannelInfo(props) {
     } else if (props.channel.service == "twitch") {
         return <Twitchinfo channelId={props.channel.id} data={props.data} errorMes={props.errorMes} setErrorMes={props.setErrorMes} analytics={props.analytics} showAnalytics={props.showAnalytics} />
     } else {
-        return <p>Error, no service by name {props.channel.service}</p>
+        return <p>Error, no service by name
+             {props.channel.service}</p>
     }
 
 }
@@ -83,7 +84,6 @@ function YouTubeInfo(props) {
                             </Col>
 
                         </Row>
-                        {console.log(props.analytics)}
                         <p>{props.errorMes}</p>
                     </ListGroup.Item>
                 </ListGroup>

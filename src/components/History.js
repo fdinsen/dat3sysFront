@@ -4,45 +4,45 @@ import facade from "../apiFacade";
 import SingleHistory from './SingleHistory';
 import SingleTimelineHistory from './SingleTimelineHistory';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function History(props) {
 
     const [arrays, setArrays] = useState(null);
-    const [errorMes, setErrorMes] = useState("");
     const [views, setViews] = useState([])
     const [followers, setFollowers] = useState([])
     const [games, setGames] = useState([]);
     const [hasData, setHasData] = useState(false);
+    const [videoCount, setVideoCount] = useState([]);
 
     useEffect(() => {
-        console.log("her er "+followers)
         const endpoint = `/${props.channel.service}/get-analytics/${props.channel.id}`
-        
+
         if (arrays === null) {
             facade.fetchData(endpoint, "GET").then(data => {
                 setArrays(data);
 
             }).catch((err) => {
-                setErrorMes("something went wrong")
+                toast.error('🦄 Wow so easy!', {
+                    position: "bottom-center",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
             })
-        }else{
-            handleData(arrays, setViews, setFollowers, setGames, setHasData);
-            
+        } else {
+            if (props.channel.service === "youtube") {
+                handleData(arrays, setViews, setFollowers, setGames, setVideoCount, setHasData, "youtube");
+            } else if (props.channel.service === "twitch") {
+                handleData(arrays, setViews, setFollowers, setGames, setVideoCount, setHasData, "twitch");
+            }
         }
 
     }, arrays)
-
-    const array = [
-        ["Dec 4, 2020 11:10:46 am", "Minecraft"],
-        ["2020-02-25", "Minecraft"],
-        ["2017-03-18", "Lol"],
-        ["2018-04-20", "Minecraft"],
-        ["2019-03-06", "Minecraft"],
-        ["2020-10-19", "Lol"],
-        ["2017-11-19", "Minecraft"],
-        ["2018-01-29", "Minecraft"],
-        ["2019-08-06", "Minecraft"],
-        ["2019-06-13", "overwatch"]
-    ]
 
     return (
 
@@ -76,7 +76,12 @@ function History(props) {
                             </Accordion.Toggle>
                         </Card.Header>
                         <Accordion.Collapse eventKey="2">
-                            <Card.Body><SingleTimelineHistory ar={games} /></Card.Body>
+                            {props.channel.service === "youtube" ? (
+                                <Card.Body><SingleHistory ar={videoCount} /></Card.Body>
+                            ) : (
+                                    <Card.Body><SingleTimelineHistory ar={games} /></Card.Body>
+                                )}
+
                         </Accordion.Collapse>
                     </Card>
 
@@ -86,26 +91,46 @@ function History(props) {
                 :
                 (<span id="spinner" class="spinner-border spinner-border-sm mr-1" role="status"></span>)}
 
-            {views}
         </>
     )
 }
 
-function handleData(data, setViews, setFollowers, setGames, setHasData) {
+function handleData(data, setViews, setFollowers, setGames, setVideoCount, setHasData, service) {
 
     let views = [];
     let followers = [];
+    let videoCount = [];
     let games = [];
+    let newIndex = 0;
+
     data.forEach((element, index, data) => {
-        console.log(element);
+
+        newIndex++;
+
         views.push([element.savedOnDate, element.views]);
-        followers.push([element.savedOnDate, element.followers]);
-        games.push([element.game, element.savedOnDate, data[index++].savedOnDate]);
+
+        if (service === "youtube") {
+
+            videoCount.push([element.savedOnDate, element.videoCount]);
+            followers.push([element.savedOnDate, element.subscribers]);
+
+        } else if (service === "twitch") {
+
+            followers.push([element.savedOnDate, element.followers]);
+
+            if (index >= data.length - 1) {
+                games.push([element.game, element.savedOnDate, element.savedOnDate]);
+            } else {
+                games.push([element.game, element.savedOnDate, data[newIndex].savedOnDate]);
+            }
+
+        }
     });
+
+    setVideoCount(videoCount);
     setViews(views);
     setFollowers(followers);
     setGames(games);
-    
 
     setHasData(true);
 }

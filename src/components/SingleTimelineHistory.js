@@ -6,7 +6,7 @@ import facade from "../apiFacade";
 import yt from "../img/yt.png"
 import twitch from "../img/twitch.png"
 import Hisotry from "./History"
-import { LineChart, PieChart, Timeline } from 'react-chartkick'
+import Chartkick, { LineChart, PieChart, Timeline } from 'react-chartkick'
 import 'chart.js'
 
 function SingleTimelineHistory(props) {
