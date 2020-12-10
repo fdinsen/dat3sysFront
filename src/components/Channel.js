@@ -69,11 +69,11 @@ function YouTubeInfo(props) {
                     </ListGroup.Item>
                     <ListGroup.Item>
                         <Card.Text>Country: {props.data.country}</Card.Text>
-                        <Card.Text>Subscribers: {props.data.subscribers}</Card.Text>
-                        <Card.Text>Views: {props.data.views}</Card.Text>
-                        <Card.Text>Videos: {props.data.videoCount}</Card.Text>
+                        <Card.Text>Subscribers: {numberWithCommas(props.data.subscribers)}</Card.Text>
+                        <Card.Text>Views: {numberWithCommas(props.data.views)}</Card.Text>
+                        <Card.Text>Videos: {numberWithCommas(props.data.videoCount)}</Card.Text>
                         <Card.Text>Topics: <ul>{props.data.topicCategories.map(elem => {
-                            return (<li>{elem}</li>)
+                            return (<li key={elem.toString()}>{elem}</li>)
                         })}</ul></Card.Text>
                         <Row>
                             <Col>
@@ -114,8 +114,8 @@ function Twitchinfo(props) {
                 <Card.Text>Is partner?: {isPartner}</Card.Text>
                 <Card.Text>Country: {props.data.country}</Card.Text>
                 <Card.Text>Game: {props.data.game}</Card.Text>
-                <Card.Text>Views: {props.data.views}</Card.Text>
-                <Card.Text>Followers: {props.data.followers}</Card.Text>
+                <Card.Text>Views: {numberWithCommas(props.data.views)}</Card.Text>
+                <Card.Text>Followers: {numberWithCommas(props.data.followers)}</Card.Text>
                 <Row>
                     <Col>
                         <Button onClick={(e) => saveTwitch(props.data, e, props.setErrorMes, props.channelId)}>Capture analytics</Button>
@@ -168,4 +168,8 @@ function getFaviconEl() {
 
 function getTitleEl() {
     return document.getElementById("title");
+}
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 }
