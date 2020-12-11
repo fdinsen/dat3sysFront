@@ -27,12 +27,10 @@ function Header(props) {
   }
 
   return (
-    <Router>
-
       <Navbar className="navbar-expand-lg navbar-light bg-light">
         <Nav>
           <Nav.Item>
-            <NavLink to="/home" className="nav-link">
+            <NavLink to="/" className="nav-link">
               Home
           </NavLink>
         </Nav.Item>

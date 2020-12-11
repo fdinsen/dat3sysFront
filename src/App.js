@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DashBoard from './components/DashBoard';
 import Home from './components/Home';
-
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
@@ -14,7 +13,6 @@ import {
 import Header from './components/Header';
 import facade from './apiFacade';
 import Register from './components/Register';
-
 import Login from './components/Login'
 
 function App() {
@@ -49,7 +47,7 @@ function App() {
           <Register setLoggedIn={setLoggedIn}/>
         </Route>
         <Route path="/login">
-          <Login setLoggedIn = {props.setLoggedIn} loggedIn={props.loggedIn}/>
+          <Login setLoggedIn = {setLoggedIn} loggedIn={loggedIn}/>
         </Route>
         <Route path="/404">
           <NoMatch />
