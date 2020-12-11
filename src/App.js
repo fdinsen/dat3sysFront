@@ -13,6 +13,7 @@ import {
 } from 'react-router-dom';
 import Header from './components/Header';
 import facade from './apiFacade';
+import Register from './components/Register';
 
 import Login from './components/Login'
 
@@ -39,11 +40,16 @@ function App() {
         draggable
         pauseOnHover
       />
-
       <Header setLoggedIn={setLoggedIn} loggedIn={loggedIn} />
       <Switch>
         <Route exact path="/">
           <Home />
+        </Route>
+        <Route path="/register">
+          <Register setLoggedIn={setLoggedIn}/>
+        </Route>
+        <Route path="/login">
+          <Login setLoggedIn = {props.setLoggedIn} loggedIn={props.loggedIn}/>
         </Route>
         <Route path="/404">
           <NoMatch />
