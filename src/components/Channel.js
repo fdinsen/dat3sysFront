@@ -6,6 +6,9 @@ import yt from "../img/yt.png"
 import twitch from "../img/twitch.png"
 import Hisotry from "./History"
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function Channel(props) {
     const [data, setData] = useState(null);
     const [hasData, setHasData] = useState(false);
@@ -84,7 +87,7 @@ function YouTubeInfo(props) {
                             </Col>
 
                         </Row>
-                        <p>{props.errorMes}</p>
+                        
                     </ListGroup.Item>
                 </ListGroup>
             </Card.Body>
@@ -135,12 +138,12 @@ function saveTwitch(data, e, setErrorMes, channelId) {
     const endpoint = "/twitch/save/" + channelId;
 
     facade.putData(endpoint, "GET").then(dat => {
-        setErrorMes("Data point succesfully saved")
+        notify("Data point succesfully saved","succes")
     }).catch((err) => {
         if (err.status == 409) {
-            setErrorMes("Analytics was allready saved for this channel within the last minuite")
+            notify("Analytics was allready saved for this channel within the last minuite","error")
         } else {
-            setErrorMes("Something else went wrong")
+            notify("Something else went wrong","error")
         }
 
     });
@@ -152,12 +155,12 @@ function saveYoutube(data, e, setErrorMes, channelId) {
     const endpoint = "/youtube/save/" + channelId;
 
     facade.putData(endpoint, "GET").then(dat => {
-        setErrorMes("Data point succesfully saved")
+        notify("Data point succesfully saved","succes")
     }).catch((err) => {
         if (err.status == 409) {
-            setErrorMes("Analytics was allready saved for this channel within the last minuite")
+            notify("Analytics was allready saved for this channel within the last minuite","error")
         } else {
-            setErrorMes("Something else went wrong")
+            notify("Something else went wrong","error")
         }
     });
 }
@@ -168,4 +171,31 @@ function getFaviconEl() {
 
 function getTitleEl() {
     return document.getElementById("title");
+}
+
+function notify(mes,type){
+
+    if(type === "succes"){
+        toast.success(mes, {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
+
+    }else if(type === "error"){
+        toast.error(mes, {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
+    }
+    
 }

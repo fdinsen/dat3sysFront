@@ -41,7 +41,7 @@ function apiFacade() {
       username: user,
       password: password,
     });
-    return fetch(URL + '/login', options)
+    return fetch("http://localhost:8080/jpareststarter/api/user/login", options)
       .then(handleHttpErrors)
       .then((res) => {
         setToken(res.token);

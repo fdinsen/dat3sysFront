@@ -17,10 +17,10 @@ function Login(props) {
         .login(loginCredentials.username, loginCredentials.password)
         .then(() => {
           props.setLoggedIn(true);
-          history.push('/dashboard');
         })
         .catch((err) => {
           if (err.status == 403) {
+            console.log(err);
             setError('Wrong username or password!');
           } else {
             setError('Something went wrong while logging in');
@@ -60,6 +60,7 @@ function Login(props) {
           Submit
         </Button>
       </Form>
+      {console.log(props.loggedIn)}
     </div>
   );
 }

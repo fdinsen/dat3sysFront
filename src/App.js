@@ -5,7 +5,6 @@ import Home from './components/Home';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 import {
   BrowserRouter as Router,
   Switch,
@@ -14,6 +13,8 @@ import {
 } from 'react-router-dom';
 import Header from './components/Header';
 import facade from './apiFacade';
+
+import Login from './components/Login'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -38,8 +39,8 @@ function App() {
         draggable
         pauseOnHover
       />
-      
-      <Header loggedIn={loggedIn} />
+
+      <Header setLoggedIn={setLoggedIn} loggedIn={loggedIn} />
       <Switch>
         <Route exact path="/">
           <Home />
