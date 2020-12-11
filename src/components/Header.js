@@ -1,7 +1,15 @@
 import { NavLink } from 'react-router-dom';
 import { Container, Nav, Navbar } from 'react-bootstrap';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
+import Login from './Login';
 import { useEffect, useState } from 'react';
 import facade from '../apiFacade';
+
 
 function Header(props) {
   const [user, setUser] = useState(null);
@@ -19,11 +27,13 @@ function Header(props) {
   }
 
   return (
-    <Navbar className="navbar-expand-lg navbar-light bg-light">
-      <Nav>
-        <Nav.Item>
-          <NavLink to="/" className="nav-link">
-            Home
+    <Router>
+
+      <Navbar className="navbar-expand-lg navbar-light bg-light">
+        <Nav>
+          <Nav.Item>
+            <NavLink to="/home" className="nav-link">
+              Home
           </NavLink>
         </Nav.Item>
 
@@ -43,11 +53,11 @@ function Header(props) {
         ) :
           (
             <>
-              {/* <Nav.Item>
+              <Nav.Item>
                 <NavLink to="/login" className="nav-link">
                   Login
                 </NavLink>
-              </Nav.Item> */}
+              </Nav.Item>
 
               <Nav.Item>
                 <NavLink to="/register" className="nav-link">
@@ -56,7 +66,6 @@ function Header(props) {
               </Nav.Item>
             </>
           )}
-
       </Nav>
     </Navbar>
   );
