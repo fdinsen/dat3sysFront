@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DashBoard from './components/DashBoard';
 import Home from './components/Home';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,6 +12,8 @@ import {
 } from 'react-router-dom';
 import Header from './components/Header';
 import facade from './apiFacade';
+import Register from './components/Register';
+import Login from './components/Login'
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -23,10 +27,27 @@ function App() {
 
   return (
     <>
-      <Header loggedIn={loggedIn} />
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      <Header setLoggedIn={setLoggedIn} loggedIn={loggedIn} />
       <Switch>
         <Route exact path="/">
           <Home />
+        </Route>
+        <Route path="/register">
+          <Register setLoggedIn={setLoggedIn}/>
+        </Route>
+        <Route path="/login">
+          <Login setLoggedIn = {setLoggedIn} loggedIn={loggedIn}/>
         </Route>
         <Route path="/404">
           <NoMatch />
